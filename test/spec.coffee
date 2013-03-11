@@ -37,13 +37,16 @@ suite 'Fail gracefully', ->
         assert.deepEqual TSV.parse('  '), []
         assert.deepEqual TSV.parse('blah blah'), []
 
-suite 'Options', ->
+suite 'Parse options', ->
 
-    test 'parse TSV with JSON values', ->
+    test 'TSV with JSON values', ->
         assert.strictEqual TSV.parse('v\n1', json: true)[0].v, 1
         assert.strictEqual TSV.parse('v\n"1"', json: true)[0].v, '1'
         assert.strictEqual TSV.parse('v\n"blah blah"', json: true)[0].v, "blah blah"
         assert.deepEqual TSV.parse('v\tw\n{"x":"a"}\t[{"y":"b"}]', json: true), [{v:{x:'a'},w:[{y:'b'}]}]
+
+    test 'trim headers', ->
+        assert.deepEqual TSV.parse('   a\tb   \t   c   \td\n\t\t\t', trimHeaders: true), [{a:'',b:'',c:'',d:''}]
 
 suite 'Larger files', ->
 

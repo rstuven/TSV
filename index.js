@@ -28,8 +28,11 @@
           , lines = tsv.split(/[\n\r]/).filter(comments)
           , keys  = lines.shift().split(sep)
           , json  = opts && opts.json
+          , trimHeaders  = opts && opts.trimHeaders
 
         if (lines.length < 1) return []
+
+        if (trimHeaders) keys = keys.map(function(k){ return k.trim() })
 
         return lines.reduce(function(p, line){
             p.push(line.split(sep).reduce(function(p, val, i){
