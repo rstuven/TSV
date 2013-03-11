@@ -37,6 +37,14 @@ suite 'Fail gracefully', ->
         assert.deepEqual TSV.parse('  '), []
         assert.deepEqual TSV.parse('blah blah'), []
 
+suite 'Options', ->
+
+    test 'parse TSV with JSON values', ->
+        assert.strictEqual TSV.parse('v\n1', json: true)[0].v, 1
+        assert.strictEqual TSV.parse('v\n"1"', json: true)[0].v, '1'
+        assert.strictEqual TSV.parse('v\n"blah blah"', json: true)[0].v, "blah blah"
+        assert.deepEqual TSV.parse('v\tw\n{"x":"a"}\t[{"y":"b"}]', json: true), [{v:{x:'a'},w:[{y:'b'}]}]
+
 suite 'Larger files', ->
 
     test '4kb', ->

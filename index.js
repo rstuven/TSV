@@ -23,16 +23,17 @@
         return !/#@/.test(line[0])
     }
 
-    function parse (tsv) {
+    function parse (tsv, opts) {
         var sep   = this.sep
           , lines = tsv.split(/[\n\r]/).filter(comments)
           , keys  = lines.shift().split(sep)
+          , json  = opts && opts.json
 
         if (lines.length < 1) return []
 
         return lines.reduce(function(p, line){
             p.push(line.split(sep).reduce(function(p, val, i){
-                p[keys[i]] = val
+                p[keys[i]] = json ? JSON.parse(val) : val
                 return p
             }, {}))
             return p
